@@ -15,6 +15,11 @@ using jobs.api.Models;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
 using System.Text;
+using Microsoft.AspNetCore.Identity;
+
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc.Authorization;
+using AutoMapper;
 
 namespace jobs.api
 {
@@ -32,7 +37,26 @@ namespace jobs.api
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddDbContext<JobsContext>(x => x.UseSqlite(Configuration.GetConnectionString("DefaultConnection")));
+            services.AddDbContext<DataContext>(x => x.UseSqlite(Configuration.GetConnectionString("DefaultConnection")));
+
+            #region  ********* Configure Identity **************
+            ///Configure Idntity Core
+            IdentityBuilder builder = services.AddIdentityCore<User>(opt =>
+            {
+                opt.Password.RequireDigit = false;
+                opt.Password.RequiredLength = 4;
+                opt.Password.RequireNonAlphanumeric = false;
+                opt.Password.RequireUppercase = false;
+            });
+            builder = new IdentityBuilder(builder.UserType, typeof(Role), builder.Services);
+            builder.AddEntityFrameworkStores<DataContext>();
+            builder.AddRoleValidator<RoleValidator<Role>>();
+            builder.AddRoleManager<RoleManager<Role>>();
+            builder.AddSignInManager<SignInManager<User>>();
+
+            #endregion
+
+            #region  ********* Configure Authentication + JWT **************
             services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
             .AddJwtBearer(options =>
             {
@@ -44,6 +68,23 @@ namespace jobs.api
                     ValidateAudience = false
                 };
             });
+
+            #endregion
+
+            services.AddAuthorization(options =>
+            {
+                options.AddPolicy("RequireAdminRole", policy => policy.RequireRole("Admin"));                
+            });
+
+            //set the default authorization header is required
+            services.AddMvc(options=>  {
+                var policy = new AuthorizationPolicyBuilder()
+                .RequireAuthenticatedUser()
+                .Build();
+                options.Filters.Add(new AuthorizeFilter(policy));
+            });
+            
+            //Add CORS header to allow all, Other part is in the Configure method
             services.AddCors(options =>
             {
                 options.AddPolicy(MyAllowSpecificOrigins,
@@ -52,6 +93,10 @@ namespace jobs.api
                     builders.AllowAnyOrigin().AllowAnyHeader().AllowAnyMethod();
                 });
             });
+
+            //Configure Automapper needs dotnet add package AutoMapper.Extensions.Microsoft.DependencyInjection            
+            services.AddAutoMapper(typeof(Startup));
+
             services.AddControllers();
         }
 

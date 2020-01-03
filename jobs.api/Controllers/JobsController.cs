@@ -14,9 +14,9 @@ namespace jobs.api.Controllers
     [ApiController]
     public class JobsController : ControllerBase
     {
-        private readonly JobsContext _context;
+        private readonly DataContext _context;
 
-        public JobsController(JobsContext context)
+        public JobsController(DataContext context)
         {
             _context = context;
         }
@@ -25,14 +25,14 @@ namespace jobs.api.Controllers
         [HttpGet]        
         public async Task<ActionResult<IEnumerable<Job>>> GetJob()
         {
-            return await _context.Job.ToListAsync();
+            return await _context.Jobs.ToListAsync();
         }
 
         // GET: api/Jobs/5
         [HttpGet("{id}")]
         public async Task<ActionResult<Job>> GetJob(int id)
         {
-            var job = await _context.Job.FindAsync(id);
+            var job = await _context.Jobs.FindAsync(id);
 
             if (job == null)
             {
@@ -80,7 +80,7 @@ namespace jobs.api.Controllers
         [HttpPost]
         public async Task<ActionResult<Job>> PostJob(Job job)
         {
-            _context.Job.Add(job);
+            _context.Jobs.Add(job);
             await _context.SaveChangesAsync();
 
             return CreatedAtAction("GetJob", new { id = job.Id }, job);
@@ -90,13 +90,13 @@ namespace jobs.api.Controllers
         [HttpDelete("{id}")]
         public async Task<ActionResult<Job>> DeleteJob(int id)
         {
-            var job = await _context.Job.FindAsync(id);
+            var job = await _context.Jobs.FindAsync(id);
             if (job == null)
             {
                 return NotFound();
             }
 
-            _context.Job.Remove(job);
+            _context.Jobs.Remove(job);
             await _context.SaveChangesAsync();
 
             return job;
@@ -104,7 +104,7 @@ namespace jobs.api.Controllers
 
         private bool JobExists(int id)
         {
-            return _context.Job.Any(e => e.Id == id);
+            return _context.Jobs.Any(e => e.Id == id);
         }
     }
 }

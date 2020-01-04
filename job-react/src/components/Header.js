@@ -1,7 +1,13 @@
 import React from "react";
 import { Link } from "react-router-dom";
+import { connect } from "react-redux";
 
 class Header extends React.Component {
+  renderSignIn = () => {
+    if(localStorage.getItem("user"))
+      return <div className="item">{`Welcome ${localStorage.getItem("user")}`}</div>;
+    else return <Link to="/Login" className="item">Log In</Link>;
+  }
   render() {
     return (
       <div>
@@ -10,7 +16,7 @@ class Header extends React.Component {
               Jobs
             </Link></div>         
           <div className="right menu">
-            <div className="item">Sign In</div>
+            {this.renderSignIn()}
             <div className="item">Help</div>
           </div>
         </div>
@@ -18,5 +24,7 @@ class Header extends React.Component {
     );
   }
 }
-
-export default Header;
+const mapStateToProps = state => {
+  return { Auth: state.Auth };
+};
+export default connect(mapStateToProps)(Header);

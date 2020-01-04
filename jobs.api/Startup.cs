@@ -20,6 +20,7 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc.Authorization;
 using AutoMapper;
+using jobs.api.Helpers;
 
 namespace jobs.api
 {
@@ -109,7 +110,10 @@ namespace jobs.api
             }
             app.UseCors(MyAllowSpecificOrigins);
 
-            app.UseHttpsRedirection();
+            app.UseCorsMiddleware();
+
+
+            //app.UseHttpsRedirection();
 
             app.UseRouting();
 

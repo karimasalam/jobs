@@ -10,6 +10,7 @@ using Microsoft.AspNetCore.Authorization;
 
 namespace jobs.api.Controllers
 {
+    [AllowAnonymous]
     [Route("api/[controller]")]
     [ApiController]
     public class JobsController : ControllerBase

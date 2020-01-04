@@ -5,6 +5,8 @@ import Header from "./Header";
 import history from '../History';
 import JobList from "./jobs/JobList";
 import JobDetails from "./jobs/JobDetails";
+import Login from "./Auth/Login";
+import Register from "./Auth/Register";
 
 
 class App extends React.Component {
@@ -16,6 +18,8 @@ class App extends React.Component {
                 <Header />               
                 <Switch>
                     <Route path='/' exact component={JobList} />
+                    <Route path='/Login' exact component={Login} />
+                    <Route path='/Register' exact component={Register} />
                     <Route path='/jobs/:id' exact component={JobDetails} />
                 </Switch>
               </div>

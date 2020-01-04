@@ -46,7 +46,11 @@ namespace jobs.api.Controllers
             var userToReturn = _mapper.Map<UserForDetailDTO>(UserToCreate);
             if( result.Succeeded)
             {
-                return Ok(userToReturn);
+                return Ok(new
+                {
+                    token = GenerateJWTToken(UserToCreate).Result,
+                    user = userToReturn
+                });
             }
             return BadRequest(result.Errors);
         }

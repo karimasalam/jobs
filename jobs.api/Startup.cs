@@ -21,6 +21,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc.Authorization;
 using AutoMapper;
 using jobs.api.Helpers;
+using  Microsoft.AspNetCore.Mvc.NewtonsoftJson;
 
 namespace jobs.api
 {
@@ -78,13 +79,17 @@ namespace jobs.api
             });
 
             //set the default authorization header is required
-            services.AddMvc(options=>  {
+            services.AddMvc(options =>
+            {
                 var policy = new AuthorizationPolicyBuilder()
                 .RequireAuthenticatedUser()
                 .Build();
                 options.Filters.Add(new AuthorizeFilter(policy));
-            });
-            
+            }).AddNewtonsoftJson(options =>
+                {
+                    options.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore;
+                });
+
             //Add CORS header to allow all, Other part is in the Configure method
             services.AddCors(options =>
             {

@@ -1,11 +1,30 @@
 import React from "react";
 import { connect } from "react-redux";
 
-import { fetchJob } from "../../actions";
+import { fetchJob, applyToJob, getUserJobs } from "../../actions";
+import history from '../../History';
 
 class JobDetails extends React.Component {
+  constructor(props) {
+    super(props);
+
+    this.buttonRef = React.createRef();
+  }
   componentDidMount() {
     this.props.fetchJob(this.props.match.params.id);
+    this.props.getUserJobs();
+
+    
+  }
+  disableButton = () => {       
+    if (this.props.userJobs && this.props.userJobs.includes(parseInt(this.props.match.params.id)) )   
+      return true;    
+    else return false;
+  }
+  onSubmit = () => {
+    if(!localStorage.getItem("userid"))
+      history.push('/Login');
+    else this.props.applyToJob(this.props.match.params.id);
   }
   render() {
     // console.log(this.props.jobs);
@@ -37,7 +56,7 @@ class JobDetails extends React.Component {
           </div>
         </div>
         <div className="extra content">
-          <button className="ui button">Apply</button>
+          <button ref={this.buttonRef} className="ui button" onClick={this.onSubmit} disabled={this.disableButton()}>Apply</button>
         </div>
       </div>
     );
@@ -45,8 +64,8 @@ class JobDetails extends React.Component {
 }
 
 const mapStateToProps = (state, ownProps) => {
-  console.log(ownProps);
-  return { job: state.jobs[ownProps.match.params.id] };
+  //console.log(ownProps);
+  return { job: state.jobs[ownProps.match.params.id], userJobs: state.userJobs  };
 };
 
-export default connect(mapStateToProps, { fetchJob })(JobDetails);
+export default connect(mapStateToProps, { fetchJob, applyToJob, getUserJobs })(JobDetails);

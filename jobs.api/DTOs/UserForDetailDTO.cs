@@ -4,6 +4,7 @@ namespace jobs.api.DTOs
 {
     public class UserForDetailDTO
     {
+        public int Id {get; set;}
         public string Username { get; set; }
         public string Gender { get; set; }
 

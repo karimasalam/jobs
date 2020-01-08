@@ -36,7 +36,7 @@ class JobList extends React.Component {
 }
 
 const mapStateToProps = state => {
-  console.log(state);
+ 
   return { jobs: Object.values(state.jobs) };
 };
 

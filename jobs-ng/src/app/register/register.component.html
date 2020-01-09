@@ -1,0 +1,36 @@
+<div class="container">
+  <form #registerForm="ngForm" class="needs-validation" (ngSubmit)="register()">
+    <div class="mb-3">
+      <label for="username"> Username </label>
+      <input class="form-control" type="text" name="username" required [(ngModel)]="model.username" />
+    </div>
+    <div class="mb-3">
+      <label for="username"> Password </label>
+      <input type="password" class="form-control" name="password" required [(ngModel)]="model.password" />
+    </div>
+    <div class="mb-3">
+      <label for="username"> Gender </label>
+      <input type="text" class="form-control" name="gender" required [(ngModel)]="model.gender" />
+    </div>
+    <div class="mb-3">
+      <label for="username"> Date Of Birth </label>
+      <input type="text" class="form-control" name="dateofbirth" required [(ngModel)]="model.dateofbirth" />
+    </div>
+    <div class="mb-3">
+      <label for="username"> About </label>
+      <input type="text" class="form-control" name="about" required [(ngModel)]="model.about" />
+    </div>
+    <div class="mb-3">
+      <label for="username"> City </label>
+      <input type="text" class="form-control" name="city" required [(ngModel)]="model.city" />
+    </div>
+    <div class="mb-3">
+      <label for="username"> Country </label>
+      <input type="text" class="form-control" name="country" required [(ngModel)]="model.country" />
+    </div>
+
+    <button [disabled]="!registerForm.valid" class="btn btn-success my-2 my-sm-0" type="submit"> Register
+    </button>
+
+  </form>
+</div>

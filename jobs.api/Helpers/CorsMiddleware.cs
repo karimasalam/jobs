@@ -17,7 +17,7 @@ namespace jobs.api.Helpers
 
         public Task Invoke(HttpContext httpContext)
         {
-            httpContext.Response.Headers.Add("Access-Control-Allow-Origin", "http://localhost:3000");
+            httpContext.Response.Headers.Add("Access-Control-Allow-Origin", "*");
             httpContext.Response.Headers.Add("Access-Control-Allow-Credentials", "true");
             httpContext.Response.Headers.Add("Access-Control-Allow-Headers", "*");
             httpContext.Response.Headers.Add("Access-Control-Allow-Methods", "POST,GET,PUT,PATCH,DELETE,OPTIONS");

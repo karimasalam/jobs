@@ -11,6 +11,7 @@ import { NavComponent } from './nav/nav.component';
 import { JobsComponent } from './jobs/jobs.component';
 import { appRoutes } from './routes';
 import { JwtModule } from '@auth0/angular-jwt';
+import { JobDetailComponent } from './JobDetail/JobDetail.component';
 
 
 export function tokenGetter() {
@@ -22,7 +23,8 @@ export function tokenGetter() {
       AppComponent,
       RegisterComponent,
       NavComponent,
-      JobsComponent
+      JobsComponent,
+      JobDetailComponent
    ],
    imports: [
       BrowserModule,
